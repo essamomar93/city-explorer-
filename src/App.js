@@ -3,7 +3,7 @@ import Form from './component/Form';
 import Location from './component/Location';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Alert from 'react-bootstrap/Alert'
 
 
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
       lat: "",
       lon: "",
       showData: false,
-      
+      error: ""
     }
   }
   handleLocation = (e) => {
@@ -26,7 +26,7 @@ class App extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    
+    try {
       let config = {
         method: "GET",
         baseURL: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.display_name}`
@@ -38,19 +38,24 @@ class App extends Component {
           lon: responseData.lon,
           lat: responseData.lat,
           showData: true,
-          
+          error: false
         })
 
       })
-    
-   
+    }
+    catch (err) {
+      this.setState({
+        error: err.message
+      })
+    }
   }
 
   render() {
     return (
       <div>
+        <h1 id="hederId">Welcome to City explorer</h1>
 
-        <Form handleLocation={this.handleLocation} handleSubmit={this.handleSubmit} />
+        <Form handleLocation={this.handleLocation} handleSubmit={this.handleSubmit}  />
 
         {
           this.state.showData &&
@@ -61,7 +66,12 @@ class App extends Component {
           />
 
         }
-     
+        {
+          this.state.error &&
+          <Alert variant='primary' >
+            {this.state.error} hi"hi"
+          </Alert>
+        }
 
 
       </div>
