@@ -22,12 +22,12 @@ Dima : https://city-explorer-dima.netlify.app/
 
 <!-- ======================= -->
 
-Name of feature:
+Name of feature: lab 06
 
-Estimate of time needed to complete: 
+Estimate of time needed to complete: 4 hure 
 
-Start time: 
+Start time: 3 pm
 
-Finish time: 
+Finish time: 9 pm
 
-Actual time needed to complete: 
+Actual time needed to complete: 6 hure 
