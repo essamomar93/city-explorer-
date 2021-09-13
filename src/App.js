@@ -15,7 +15,8 @@ class App extends Component {
       lat: "",
       lon: "",
       showData: false,
-      error: ""
+      showAlert: false,
+      error:{}
     }
   }
   handleLocation = (e) => {
@@ -26,28 +27,25 @@ class App extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      let config = {
-        method: "GET",
-        baseURL: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.display_name}`
-      }
-      axios(config).then(res => {
-        let responseData = res.data[0]
-        this.setState({
-          display_name: responseData.display_name,
-          lon: responseData.lon,
-          lat: responseData.lat,
-          showData: true,
-          error: false
-        })
-
-      })
+   
+    let config = {
+      method: "GET",
+      baseURL: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.display_name}`
     }
-    catch (err) {
+    axios(config).then(res => {
+      let responseData = res.data[0]
       this.setState({
-        error: err.message
+        display_name: responseData.display_name,
+        lon: responseData.lon,
+        lat: responseData.lat,
+        showData: true,
       })
-    }
+    })
+    .catch(error=>
+      this.setState({
+      error: error.toString(), showAlert:true
+         }))
+    
   }
 
   render() {
@@ -55,7 +53,7 @@ class App extends Component {
       <div>
         <h1 id="hederId">Welcome to City explorer</h1>
 
-        <Form handleLocation={this.handleLocation} handleSubmit={this.handleSubmit}  />
+        <Form handleLocation={this.handleLocation} handleSubmit={this.handleSubmit} />
 
         {
           this.state.showData &&
@@ -67,11 +65,12 @@ class App extends Component {
 
         }
         {
-          this.state.error &&
+          this.state.showAlert &&
           <Alert variant='primary' >
-            {this.state.error} hi"hi"
+            {this.state.error} 
           </Alert>
         }
+        
 
 
       </div>
