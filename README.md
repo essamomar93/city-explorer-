@@ -13,9 +13,8 @@ the user must take the link of deploying netlify
 javascript, html, react liprary , axios
 
 ## Change Log 
-<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
 
-01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
+12-09-2021 9:00pm - Application now has a fully-functional express server
 
 ## Credit and Collaborations
 Dima : https://city-explorer-dima.netlify.app/ 
