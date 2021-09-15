@@ -16,7 +16,8 @@ class App extends Component {
       showData: false,
       showAlert: false,
       error: {},
-      weatherData: []
+      weatherData: [],
+      movieData: []
     };
   }
   handleLocation = (e) => {
@@ -47,10 +48,10 @@ class App extends Component {
           showAlert: true,
         })
       )
+
       .then(() => {
         let locationName = this.state.display_name.split(',')[0];
-        axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/witherData?city_name=${locationName}&lat=${this.state.lat}&lon=${this.state.lon}`)
-
+        axios.get(`http://localhost:8000/weather?city=${locationName} &key=${process.env.WEATHER_API_KEY}`)
           .then((res) => {
             console.log(res)
             this.setState({
@@ -59,6 +60,16 @@ class App extends Component {
           })
       })
 
+      .then(() => {
+        let locationName = this.state.display_name.split(',')[0];
+        axios.get(`http://localhost:8000/movie?query=${locationName}&key=${process.env.MOVIES_API_KEY}`)
+          .then((res) => {
+            console.log(res)
+            this.setState({
+              movieData: res.data
+            });
+          })
+      })
   }
   render() {
     return (
@@ -81,17 +92,32 @@ class App extends Component {
             lon={this.state.lon}
           />
         }
-        {this.state.weatherData.map((i) => {
+
+        {this.state.weatherData.map((item) => {
           return (
             <>
-              <h3>Date</h3>
-              <p> {i.date}</p>
-              <h3> Description</h3>
-              <p>  {i.description}</p>
+              <h3>Date :{item.date}</h3>
+              <h3> Description : {item.description}</h3>
+            </>
+          );
+        })
+        }
+        <br />
+        <br />
+        <br />
+
+        {this.state.movieData.map((item) => {
+          return (
+            <>
+              <h3 id="movieData">Date :{item.date}</h3>
+              <h3 id="movieltitle"> title :{item.title}</h3>
+              <h3> overview :{item.overview}</h3>
+              <h3> vote_average :{item.vote_average}</h3>
+              <h3> vote_count :{item.vote_count}</h3>
+              <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt={item.title} ></img>
             </>
           );
         })}
-
 
       </div>
     );
