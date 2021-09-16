@@ -28,6 +28,14 @@ class App extends Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
+    if (this.state.display_name.length == 0) {
+      this.setState({
+        error: "empty name",
+        showAlert: true,
+      })
+      return
+    }
+
     let config = {
       method: "GET",
       baseURL: `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.display_name}&format=json`,
@@ -51,9 +59,8 @@ class App extends Component {
 
       .then(() => {
         let locationName = this.state.display_name.split(',')[0];
-        axios.get(`http://localhost:8000/weather?city=${locationName} &key=${process.env.WEATHER_API_KEY}`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/weather?city=${locationName}&key=${process.env.WEATHER_API_KEY}`)
           .then((res) => {
-            console.log(res)
             this.setState({
               weatherData: res.data
             });
@@ -62,14 +69,14 @@ class App extends Component {
 
       .then(() => {
         let locationName = this.state.display_name.split(',')[0];
-        axios.get(`http://localhost:8000/movie?query=${locationName}&key=${process.env.MOVIES_API_KEY}`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/movie?query=${locationName}&key=${process.env.MOVIES_API_KEY}`)
           .then((res) => {
-            console.log(res)
             this.setState({
               movieData: res.data
             });
           })
       })
+
   }
   render() {
     return (
@@ -82,7 +89,6 @@ class App extends Component {
           handleLocation={this.handleLocation}
           handleSubmit={this.handleSubmit}
         />
-
         {
           this.state.showData &&
           <Location
@@ -105,7 +111,6 @@ class App extends Component {
         <br />
         <br />
         <br />
-
         {this.state.movieData.map((item) => {
           return (
             <>
